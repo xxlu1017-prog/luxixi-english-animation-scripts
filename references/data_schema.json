@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Episode Scriptbook Data",
+  "type": "object",
+  "required": ["animation_name", "animation_name_cn", "season", "episode", "episode_title", "vocabulary", "scenes"],
+  "properties": {
+    "animation_name": {"type": "string", "description": "动画英文名"},
+    "animation_name_cn": {"type": "string", "description": "动画中文名"},
+    "season": {"type": "integer", "minimum": 1},
+    "episode": {"type": "integer", "minimum": 1},
+    "episode_title": {"type": "string", "description": "单集英文标题"},
+    "episode_title_cn": {"type": "string", "description": "单集中文标题"},
+    "target_lexile": {"type": "string", "description": "观众蓝思值区间（选词与词汇分级的依据），如 200-300L 或 250L；观众不知道时按估算区间填写"},
+    "poster_image": {"type": "string", "description": "封面主插图本地路径（必须为该集真实截图，禁止 AI 生成）"},
+    "vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["word", "phonetic", "pos", "meaning", "level"],
+        "properties": {
+          "word": {"type": "string"},
+          "phonetic": {"type": "string"},
+          "pos": {"type": "string"},
+          "meaning": {"type": "string"},
+          "level": {"type": "string", "enum": ["high", "mid", "low"]}
+        }
+      }
+    },
+    "phrases": {"type": "array", "items": {"type": "string"}, "description": "核心词组列表（可选）"},
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scene_id", "time_range", "dialogues"],
+        "properties": {
+          "scene_id": {"type": "integer"},
+          "scene_type": {"type": "string", "description": "场景类型描述"},
+          "image": {"type": "string", "description": "场景插图本地路径（必须为该集真实截图，按真实时间戳截帧，禁止 AI 生成）"},
+          "characters": {"type": "array", "items": {"type": "string"}},
+          "time_range": {"type": "string", "description": "必须落在该集实际时长内"},
+          "dialogues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["speaker", "text"],
+              "properties": {
+                "speaker": {"type": "string"},
+                "text": {"type": "string"},
+                "translation": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
